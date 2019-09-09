@@ -1,0 +1,12 @@
+server:
+  port: 9095
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/oj
+    username: <username>
+    password: <password>
+  profiles:
+    active: dev
+mybatis:
+  mapper-locations: classpath*:com/ziheliu/ojbackend/dao/mybatis/*Mapper.xml
+  type-aliases-package: com.ziheliu.ojbackend.model.entity
