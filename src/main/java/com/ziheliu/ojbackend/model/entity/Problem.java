@@ -2,7 +2,6 @@ package com.ziheliu.ojbackend.model.entity;
 
 public class Problem {
   private Integer id;
-
   private String desc;
 
   public Problem() {}
