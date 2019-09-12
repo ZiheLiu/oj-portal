@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public UserDto createUser(UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+  public UserDto createUser(UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException, DuplicateKeyException {
     String salt = CodecUtils.randomSalt();
     String encodePassword = CodecUtils.sha256Encode(userDto.getPassword(), salt);
     User user = new User(userDto.getUsername(), encodePassword, salt);

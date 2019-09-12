@@ -2,7 +2,6 @@ package com.ziheliu.ojbackend.controller;
 
 import com.ziheliu.ojbackend.model.dto.MessageDto;
 import com.ziheliu.ojbackend.model.dto.UserDto;
-import com.ziheliu.ojbackend.security.SecurityInterceptor;
 import com.ziheliu.ojbackend.security.SecurityManager;
 import com.ziheliu.ojbackend.security.SecurityUser;
 import com.ziheliu.ojbackend.service.UserService;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,10 +59,14 @@ public class UserController {
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  public UserDto register(@Valid @RequestBody UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+  public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
     userDto.setRoleList(Collections.singletonList("BASIC"));
-    userService.createUser(userDto);
-    return userDto;
+    try {
+      userService.createUser(userDto);
+    } catch (DuplicateKeyException exception) {
+      return new ResponseEntity<>(new MessageDto("用户名已经存在"), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok(userDto);
   }
 
   @RequestMapping(path = "/logout",method = RequestMethod.GET)
