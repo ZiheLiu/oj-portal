@@ -10,16 +10,19 @@ public class UserDto {
   @NotNull
   private String password;
 
-  private List<RoleDto> roleList;
+  private String salt;
+
+  private List<String> roleList;
 
   public UserDto() {
 
   }
 
-  public UserDto(Integer id, String username, String password, List<RoleDto> roleList) {
+  public UserDto(Integer id, String username, String password, String salt, List<String> roleList) {
     this.id = id;
     this.username = username;
     this.password = password;
+    this.salt = salt;
     this.roleList = roleList;
   }
 
@@ -47,11 +50,19 @@ public class UserDto {
     this.password = password;
   }
 
-  public List<RoleDto> getRoleList() {
+  public List<String> getRoleList() {
     return roleList;
   }
 
-  public void setRoleList(List<RoleDto> roleList) {
+  public void setRoleList(List<String> roleList) {
     this.roleList = roleList;
+  }
+
+  public String getSalt() {
+    return salt;
+  }
+
+  public void setSalt(String salt) {
+    this.salt = salt;
   }
 }

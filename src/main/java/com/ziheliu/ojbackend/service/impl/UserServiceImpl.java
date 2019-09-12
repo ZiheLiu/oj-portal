@@ -1,16 +1,17 @@
 package com.ziheliu.ojbackend.service.impl;
 
 import com.ziheliu.ojbackend.dao.mybatis.UserMapper;
-import com.ziheliu.ojbackend.model.dto.RoleDto;
 import com.ziheliu.ojbackend.model.dto.UserDto;
 import com.ziheliu.ojbackend.model.entity.Role;
 import com.ziheliu.ojbackend.model.entity.User;
 import com.ziheliu.ojbackend.model.entity.UserRole;
 import com.ziheliu.ojbackend.service.UserService;
+import com.ziheliu.ojbackend.utils.CodecUtils;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,28 +34,34 @@ public class UserServiceImpl implements UserService {
     }
 
     List<Role> roleList = userMapper.selectRoleListByUsername(username);
-    List<RoleDto> roleDtoList = roleList
+    List<String> roleDtoList = roleList
       .stream()
-      .map(role -> new RoleDto(role.getId(), role.getDescription()))
+      .map(Role::getDescription)
       .collect(Collectors.toList());
 
-    return new UserDto(user.getId(), user.getUsername(), user.getPassword(), roleDtoList);
+    return new UserDto(user.getId(), user.getUsername(), user.getPassword(), user.getSalt(), roleDtoList);
   }
 
   @Override
   @Transactional
-  public UserDto createUser(UserDto userDto) {
-    String encodePassword = new BCryptPasswordEncoder().encode(userDto.getPassword());
-    User user = new User(userDto.getUsername(), encodePassword);
+  public UserDto createUser(UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    String salt = CodecUtils.randomSalt();
+    String encodePassword = CodecUtils.sha256Encode(userDto.getPassword(), salt);
+    User user = new User(userDto.getUsername(), encodePassword, salt);
     userMapper.insertUser(user);
     userDto.setId(user.getId());
 
-    for (RoleDto roleDto : userDto.getRoleList()) {
-      Role role = userMapper.selectRoleByDescription(roleDto.getDescription());
-      roleDto.setId(role.getId());
-      userMapper.insertUserRole(new UserRole(userDto.getId(), roleDto.getId()));
+    for (String roleDesc : userDto.getRoleList()) {
+      Role role = userMapper.selectRoleByDescription(roleDesc);
+      userMapper.insertUserRole(new UserRole(userDto.getId(), role.getId()));
     }
 
     return userDto;
+  }
+
+  @Override
+  public boolean authenticate(UserDto userDto, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    String encodePassword = CodecUtils.sha256Encode(password, userDto.getSalt());
+    return encodePassword.equals(userDto.getPassword());
   }
 }

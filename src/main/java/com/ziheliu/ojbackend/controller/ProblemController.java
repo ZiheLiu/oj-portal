@@ -1,6 +1,7 @@
 package com.ziheliu.ojbackend.controller;
 
 import com.ziheliu.ojbackend.model.dto.ProblemDto;
+import com.ziheliu.ojbackend.security.HasRole;
 import com.ziheliu.ojbackend.service.ProblemService;
 import java.util.List;
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/problems")
+@HasRole("BASIC")
 public class ProblemController {
   private final ProblemService problemService;
 

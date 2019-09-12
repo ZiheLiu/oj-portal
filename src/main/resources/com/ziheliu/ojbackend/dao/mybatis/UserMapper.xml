@@ -14,7 +14,7 @@
     </resultMap>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (`username`, `password`) VALUES (#{username}, #{password})
+        INSERT INTO user (`username`, `password`, `salt`) VALUES (#{username}, #{password}, #{salt})
     </insert>
 
     <select id="selectUserByUsername" resultMap="user">

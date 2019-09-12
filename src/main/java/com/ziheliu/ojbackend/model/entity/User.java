@@ -4,14 +4,16 @@ public class User {
   private Integer id;
   private String username;
   private String password;
+  private String salt;
 
   public User() {
 
   }
 
-  public User(String username, String password) {
+  public User(String username, String password, String salt) {
     this.username = username;
     this.password = password;
+    this.salt = salt;
   }
 
   public Integer getId() {
@@ -36,5 +38,13 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getSalt() {
+    return salt;
+  }
+
+  public void setSalt(String salt) {
+    this.salt = salt;
   }
 }
