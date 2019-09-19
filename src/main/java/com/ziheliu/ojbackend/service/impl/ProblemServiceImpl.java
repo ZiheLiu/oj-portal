@@ -7,11 +7,14 @@ import com.ziheliu.ojbackend.model.dto.ProblemDto;
 import com.ziheliu.ojbackend.model.dto.TesterConfig;
 import com.ziheliu.ojbackend.model.entity.Problem;
 import com.ziheliu.ojbackend.service.ProblemService;
+import com.ziheliu.ojbackend.utils.ZipUtils;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,10 +23,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class ProblemServiceImpl implements ProblemService {
 
   private final ProblemMapper problemMapper;
+  private final String RUNTIME_ROOT;
+  private final String PROBLEM_PATH;
 
   @Autowired
-  public ProblemServiceImpl(ProblemMapper problemMapper) {
+  public ProblemServiceImpl(ProblemMapper problemMapper, @Value("${runtime-path}") String runtime_root) {
     this.problemMapper = problemMapper;
+    RUNTIME_ROOT = runtime_root;
+    PROBLEM_PATH = RUNTIME_ROOT + "/problem";
   }
 
   @Override
@@ -105,5 +112,10 @@ public class ProblemServiceImpl implements ProblemService {
       score += testCase.getScore();
     }
     return score;
+  }
+
+  @Override
+  public void writeProblem2Disk(Map<String, byte[]> files, ProblemDto problemDto) throws IOException {
+    ZipUtils.write(files, PROBLEM_PATH + "/" + problemDto.getId());
   }
 }

@@ -13,7 +13,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +29,10 @@ public class ProblemController {
   private static final Logger LOGGER = LoggerFactory.getLogger(ProblemController.class);
 
   private final ProblemService problemService;
-  private final Environment env;
 
   @Autowired
-  public ProblemController(ProblemService problemService, Environment env) {
+  public ProblemController(ProblemService problemService) {
     this.problemService = problemService;
-    this.env = env;
   }
 
   @HasRole("ADMIN")
@@ -49,7 +46,7 @@ public class ProblemController {
       problemDto.setScore(score);
 
       problemDto = problemService.createProblem(problemDto);
-      ZipUtils.write(testerMap, env.getProperty("runtime-path") + "/" + problemDto.getId());
+      problemService.writeProblem2Disk(testerMap, problemDto);
     } catch (IOException | TesterConfigException e) {
       LOGGER.error(e.getMessage());
       return new ResponseEntity<>(new MessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
