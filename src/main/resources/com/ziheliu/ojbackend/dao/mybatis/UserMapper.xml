@@ -23,7 +23,7 @@
 
 
     <insert id="insertUserRole">
-        INSERT INTO user_role (`user_id`, `role_id`) VALUES (#{userId}, #{roleId})
+        INSERT INTO user_role (`user_id`, `role_id`) VALUES (#{username}, #{roleId})
     </insert>
 
     <select id="selectRoleListByUsername" resultMap="role">
