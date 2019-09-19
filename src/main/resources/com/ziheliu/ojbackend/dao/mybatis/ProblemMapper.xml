@@ -22,11 +22,11 @@
     </insert>
 
     <select id="selectProblemById" resultMap="problem">
-        SELECT * FROM problem WHERE id = #{problemId}
+        SELECT * FROM problem WHERE id = #{problemId} and deleted = 0
     </select>
 
     <select id="selectProblems" resultMap="problem">
-        SELECT * FROM problem
+        SELECT * FROM problem WHERE deleted = 0
     </select>
 
 </mapper>
