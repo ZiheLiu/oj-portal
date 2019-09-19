@@ -1,5 +1,7 @@
 package com.ziheliu.ojbackend.model.entity;
 
+import java.sql.Timestamp;
+
 public class Problem {
   private Integer id;
   private String title;
@@ -10,10 +12,13 @@ public class Problem {
   private int score;
   private boolean enable;
   private boolean deleted;
+  private Timestamp createDate;
+  private Timestamp updateDate;
+
 
   public Problem() {}
 
-  public Problem(String title, String description, String language, int memory, int timeout, int score, boolean enable) {
+  public Problem(String title, String description, String language, int memory, int timeout, int score, boolean enable, Timestamp createDate, Timestamp updateDate) {
     this.title = title;
     this.description = description;
     this.language = language;
@@ -21,6 +26,8 @@ public class Problem {
     this.timeout = timeout;
     this.score = score;
     this.enable = enable;
+    this.createDate = createDate;
+    this.updateDate = updateDate;
   }
 
   public Integer getId() {
@@ -93,5 +100,21 @@ public class Problem {
 
   public void setDeleted(boolean deleted) {
     this.deleted = deleted;
+  }
+
+  public Timestamp getCreateDate() {
+    return createDate;
+  }
+
+  public void setCreateDate(Timestamp createDate) {
+    this.createDate = createDate;
+  }
+
+  public Timestamp getUpdateDate() {
+    return updateDate;
+  }
+
+  public void setUpdateDate(Timestamp updateDate) {
+    this.updateDate = updateDate;
   }
 }

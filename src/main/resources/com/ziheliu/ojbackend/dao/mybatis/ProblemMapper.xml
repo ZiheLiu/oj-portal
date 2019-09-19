@@ -4,13 +4,21 @@
 
     <resultMap id="problem" type="Problem">
         <id property="id" column="id"/>
+        <result property="title" column="title"/>
         <result property="description" column="description"/>
+        <result property="language" column="language"/>
+        <result property="memory" column="memory"/>
+        <result property="timeout" column="timeout"/>
+        <result property="score" column="score"/>
+        <result property="enable" column="enable"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
     </resultMap>
 
     <insert id="insertProblem" useGeneratedKeys="true" keyProperty="id">
         INSERT
-          INTO problem (`description`, `language`, `memory`, `timeout`, `score`, `enable`)
-          VALUES (#{description}, #{language}, #{memory}, #{timeout}, #{score}, #{enable})
+          INTO problem (`title`, `description`, `language`, `memory`, `timeout`, `score`, `enable`, `create_date`, `update_date`)
+          VALUES (#{title}, #{description}, #{language}, #{memory}, #{timeout}, #{score}, #{enable}, #{createDate}, #{updateDate})
     </insert>
 
     <select id="selectProblemById" resultMap="problem">

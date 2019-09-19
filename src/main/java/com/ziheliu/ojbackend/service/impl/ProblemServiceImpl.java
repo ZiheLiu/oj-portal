@@ -7,6 +7,7 @@ import com.ziheliu.ojbackend.model.dto.ProblemDto;
 import com.ziheliu.ojbackend.model.dto.TesterConfig;
 import com.ziheliu.ojbackend.model.entity.Problem;
 import com.ziheliu.ojbackend.service.ProblemService;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,7 +35,9 @@ public class ProblemServiceImpl implements ProblemService {
       problemDto.getMemory(),
       problemDto.getTimeout(),
       problemDto.getScore(),
-      problemDto.isEnable());
+      problemDto.isEnable(),
+      new Timestamp(problemDto.getCreateTimestamp()),
+      new Timestamp(problemDto.getUpdateTimestamp()));
     problemMapper.insertProblem(problem);
     problemDto.setId(problem.getId());
 
@@ -54,7 +57,9 @@ public class ProblemServiceImpl implements ProblemService {
         problem.getMemory(),
         problem.getTimeout(),
         problem.getScore(),
-        problem.isEnable()))
+        problem.isEnable(),
+        problem.getCreateDate().getTime(),
+        problem.getUpdateDate().getTime()))
       .collect(Collectors.toList());
   }
 
@@ -76,7 +81,9 @@ public class ProblemServiceImpl implements ProblemService {
       problem.getMemory(),
       problem.getTimeout(),
       problem.getScore(),
-      problem.isEnable());
+      problem.isEnable(),
+      problem.getCreateDate().getTime(),
+      problem.getUpdateDate().getTime());
   }
 
   @Override

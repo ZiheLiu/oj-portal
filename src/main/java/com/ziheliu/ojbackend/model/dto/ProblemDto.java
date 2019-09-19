@@ -25,9 +25,15 @@ public class ProblemDto {
   @NotNull(message = "enable is required")
   private boolean enable;
 
+  @NotNull(message = "createTimestamp is required")
+  private long createTimestamp;
+
+  @NotNull(message = "updateTimestamp is required")
+  private long updateTimestamp;
+
   public ProblemDto() {}
 
-  public ProblemDto(Integer id, String title, String description, String language, int memory, int timeout, int score, boolean enable) {
+  public ProblemDto(Integer id, String title, String description, String language, int memory, int timeout, int score, boolean enable, long createTimestamp, long updateTimestamp) {
     this.id = id;
     this.title = title;
     this.description = description;
@@ -36,6 +42,8 @@ public class ProblemDto {
     this.timeout = timeout;
     this.score = score;
     this.enable = enable;
+    this.createTimestamp = createTimestamp;
+    this.updateTimestamp = updateTimestamp;
   }
 
   public Integer getId() {
@@ -100,5 +108,21 @@ public class ProblemDto {
 
   public void setEnable(boolean enable) {
     this.enable = enable;
+  }
+
+  public long getCreateTimestamp() {
+    return createTimestamp;
+  }
+
+  public void setCreateTimestamp(long createTimestamp) {
+    this.createTimestamp = createTimestamp;
+  }
+
+  public long getUpdateTimestamp() {
+    return updateTimestamp;
+  }
+
+  public void setUpdateTimestamp(long updateTimestamp) {
+    this.updateTimestamp = updateTimestamp;
   }
 }
