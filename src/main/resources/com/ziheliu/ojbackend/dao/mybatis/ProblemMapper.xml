@@ -4,11 +4,13 @@
 
     <resultMap id="problem" type="Problem">
         <id property="id" column="id"/>
-        <result property="desc" column="desc"/>
+        <result property="description" column="description"/>
     </resultMap>
 
     <insert id="insertProblem" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO problem (`desc`) VALUES (#{desc})
+        INSERT
+          INTO problem (`description`, `language`, `memory`, `timeout`, `score`, `enable`)
+          VALUES (#{description}, #{language}, #{memory}, #{timeout}, #{score}, #{enable})
     </insert>
 
     <select id="selectProblemById" resultMap="problem">
