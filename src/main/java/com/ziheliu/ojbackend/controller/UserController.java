@@ -1,7 +1,9 @@
 package com.ziheliu.ojbackend.controller;
 
+import com.ziheliu.ojbackend.model.dto.LoginUserDto;
 import com.ziheliu.ojbackend.model.dto.MessageDto;
 import com.ziheliu.ojbackend.model.dto.UserDto;
+import com.ziheliu.ojbackend.security.HasRole;
 import com.ziheliu.ojbackend.security.SecurityManager;
 import com.ziheliu.ojbackend.security.SecurityUser;
 import com.ziheliu.ojbackend.service.UserService;
@@ -9,7 +11,6 @@ import com.ziheliu.ojbackend.utils.CodecUtils;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-  public static final int TOKEN_LENGTH = 32;
+  private static final int TOKEN_LENGTH = 32;
 
   private final UserService userService;
   private final SecurityManager securityManager;
@@ -37,7 +38,7 @@ public class UserController {
   }
 
   @RequestMapping(path = "/login", method = RequestMethod.POST)
-  public ResponseEntity<MessageDto> login(@Valid @RequestBody UserDto userDto, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+  public ResponseEntity<MessageDto> login(@Valid @RequestBody LoginUserDto userDto, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException {
     UserDto user = userService.getUserByUsername(userDto.getUsername());
     if (user == null) {
       return new ResponseEntity<>(new MessageDto("用户名不存在"), HttpStatus.UNAUTHORIZED);
@@ -58,9 +59,9 @@ public class UserController {
     return new ResponseEntity<>(new MessageDto(""), HttpStatus.OK);
   }
 
+  @HasRole("ADMIN")
   @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<?> register(@Valid @RequestBody UserDto userDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-    userDto.setRoleList(Collections.singletonList("BASIC"));
     try {
       userService.createUser(userDto);
     } catch (DuplicateKeyException exception) {

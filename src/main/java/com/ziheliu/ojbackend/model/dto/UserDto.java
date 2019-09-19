@@ -12,6 +12,7 @@ public class UserDto {
 
   private String salt;
 
+  @NotNull
   private List<String> roleList;
 
   public UserDto() {
