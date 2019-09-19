@@ -9,6 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 public class SecurityInterceptor implements HandlerInterceptor {
 
+  public static final String SECURITY_USER = "SECURITY_USER";
+
   @Autowired
   private SecurityManager securityManager;
 
@@ -40,6 +42,8 @@ public class SecurityInterceptor implements HandlerInterceptor {
       setResponse(response, "需要权限#" + role);
       return false;
     }
+
+    request.setAttribute(SECURITY_USER, user);
 
     return true;
   }
