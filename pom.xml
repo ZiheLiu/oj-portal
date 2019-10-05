@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ziheliu</groupId>
-	<artifactId>oj-backend</artifactId>
+	<artifactId>oj-portal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ojbackend</name>
+	<name>oj-portal</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
