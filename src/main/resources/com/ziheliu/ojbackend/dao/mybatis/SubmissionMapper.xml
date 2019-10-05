@@ -14,10 +14,12 @@
     </resultMap>
 
     <insert id="insertSubmission" useGeneratedKeys="true" keyProperty="id">
-        INSERT
-          INTO submission (`username`, `problem_id`, `create_date`, `status`, `code`)
-          VALUES (#{username}, #{problemId}, #{createDate}, #{status}, #{code})
-
+        INSERT INTO submission (`username`, `problem_id`, `create_date`, `status`, `code`)
+          SELECT #{username}, #{problemId}, #{createDate}, #{status}, #{code}
+          WHERE NOT EXISTS (
+            SELECT * FROM submission
+            WHERE username = #{username} and problem_id = #{problemId} and status not in ("SUCCESS", "FAIELD")
+          )
     </insert>
 
     <select id="selectSubmissionById" resultMap="submission">

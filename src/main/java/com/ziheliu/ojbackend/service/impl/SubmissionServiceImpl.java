@@ -31,7 +31,10 @@ public class SubmissionServiceImpl implements SubmissionService {
       new Timestamp(submissionDto.getCreateTimestamp()),
       submissionDto.getStatus(),
       submissionDto.getCode());
-    submissionMapper.insertSubmission(submission);
+    int res = submissionMapper.insertSubmission(submission);
+    if (res == 0) {
+      return null;
+    }
     submissionDto.setId(submission.getId());
     return submissionDto;
   }

@@ -46,13 +46,13 @@ public class SubmissionController {
     if (!user.containsRole("ADMIN") && !problemDto.isEnable()) {
       return new ResponseEntity<>(new MessageDto("题目不允许提交"), HttpStatus.FORBIDDEN);
     }
-    if (submissionService.hasUnfinishedSubmissions(user.getUsername(), problemDto.getId())) {
-      return new ResponseEntity<>(new MessageDto("现有的提交还没有完成"), HttpStatus.FORBIDDEN);
-    }
 
     submissionDto.setUsername(user.getUsername());
     submissionDto.setStatus("PENDING");
-    submissionService.createSubmission(submissionDto);
+    submissionDto = submissionService.createSubmission(submissionDto);
+    if (submissionDto == null) {
+      return new ResponseEntity<>(new MessageDto("现有的提交还没有完成"), HttpStatus.FORBIDDEN);
+    }
 
     // TODO: send compile task to rocket mq
 
