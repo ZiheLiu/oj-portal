@@ -17,6 +17,7 @@
         INSERT
           INTO submission (`username`, `problem_id`, `create_date`, `status`, `code`)
           VALUES (#{username}, #{problemId}, #{createDate}, #{status}, #{code})
+
     </insert>
 
     <select id="selectSubmissionById" resultMap="submission">
@@ -25,6 +26,11 @@
 
     <select id="selectSubmissions" resultMap="submission">
         SELECT * FROM submission
+    </select>
+
+    <select id="hasUnfinishedSubmissions" resultType="java.lang.Integer">
+        SELECT count(*) FROM submission
+          WHERE username = #{username} and problem_id = #{problemId} and status not in ("SUCCESS", "FAIELD")
     </select>
 
 </mapper>

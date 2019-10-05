@@ -49,6 +49,11 @@ public class SubmissionServiceImpl implements SubmissionService {
     return submission2dto(submissionMapper.selectSubmissionById(submissionId));
   }
 
+  @Override
+  public boolean hasUnfinishedSubmissions(String username, int problemId) {
+    return submissionMapper.hasUnfinishedSubmissions(username, problemId) > 0;
+  }
+
   private SubmissionDto submission2dto(Submission submission) {
     Gson gson = new Gson();
 

@@ -43,8 +43,11 @@ public class SubmissionController {
     if (problemDto == null) {
       return new ResponseEntity<>(new MessageDto("题目#" + submissionDto.getProblemId() + "不存在"), HttpStatus.NOT_FOUND);
     }
-    if (!user.containsRole("ADMIN") && problemDto.isEnable()) {
+    if (!user.containsRole("ADMIN") && !problemDto.isEnable()) {
       return new ResponseEntity<>(new MessageDto("题目不允许提交"), HttpStatus.FORBIDDEN);
+    }
+    if (submissionService.hasUnfinishedSubmissions(user.getUsername(), problemDto.getId())) {
+      return new ResponseEntity<>(new MessageDto("现有的提交还没有完成"), HttpStatus.FORBIDDEN);
     }
 
     submissionDto.setUsername(user.getUsername());

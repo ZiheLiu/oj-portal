@@ -9,4 +9,6 @@ public interface SubmissionService {
   public List<SubmissionDto> getSubmissionList();
 
   public SubmissionDto getSubmissionById(int problemId);
+
+  public boolean hasUnfinishedSubmissions(String username, int problemId);
 }

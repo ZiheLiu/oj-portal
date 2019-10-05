@@ -3,6 +3,7 @@ package com.ziheliu.ojbackend.dao.mybatis;
 import com.ziheliu.ojbackend.model.entity.Submission;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Mapper
@@ -14,4 +15,7 @@ public interface SubmissionMapper {
   public Submission selectSubmissionById(int submissionId);
 
   public List<Submission> selectSubmissions();
+
+  public int hasUnfinishedSubmissions(@Param("username") String username,
+                                      @Param("problemId") int problemId);
 }
