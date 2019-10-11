@@ -1,5 +1,6 @@
 package com.ziheliu.model.dto;
 
+import com.ziheliu.utils.CodecUtils;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 
@@ -140,5 +141,9 @@ public class SubmissionDto {
 
   public void setResultList(List<SubmissionResult> resultList) {
     this.resultList = resultList;
+  }
+
+  public String decode() {
+    return CodecUtils.int2chars(id) + CodecUtils.int2chars(problemId) + code;
   }
 }

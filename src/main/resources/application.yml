@@ -18,4 +18,9 @@ spring:
 mybatis:
   mapper-locations: classpath*:com/ziheliu/dao/mybatis/*Mapper.xml
   type-aliases-package: com.ziheliu.model.entity
-runtime-path: /Users/liuzihe/MyFiles/Study/Project/java/runtime
+runtime-path: /Users/liuzihe/MyFiles/Study/Project/java/oj/oj-portal/runtime
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: oj-group
+    send-message-timeout: 30000

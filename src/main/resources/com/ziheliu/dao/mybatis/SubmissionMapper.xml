@@ -32,7 +32,7 @@
 
     <select id="hasUnfinishedSubmissions" resultType="java.lang.Integer">
         SELECT count(*) FROM submission
-          WHERE username = #{username} and problem_id = #{problemId} and status not in ("SUCCESS", "FAIELD")
+          WHERE username = #{username} and problem_id = #{problemId} and status not in ("SUCCESS", "COMPILE_ERROR")
     </select>
 
 </mapper>

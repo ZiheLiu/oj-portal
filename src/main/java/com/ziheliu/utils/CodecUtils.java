@@ -30,4 +30,13 @@ public final class CodecUtils {
     }
     return builder.toString();
   }
+
+  public static String int2chars(int value) {
+    StringBuilder res = new StringBuilder();
+    for (int i = 0; i < 4; i++) {
+      res.append((char) (value & 0xff));
+      value >>>= 8;
+    }
+    return res.toString();
+  }
 }

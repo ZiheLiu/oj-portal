@@ -27,10 +27,10 @@ public class ProblemServiceImpl implements ProblemService {
   private final String PROBLEM_PATH;
 
   @Autowired
-  public ProblemServiceImpl(ProblemMapper problemMapper, @Value("${runtime-path}") String runtime_root) {
+  public ProblemServiceImpl(ProblemMapper problemMapper, @Value("${runtime-path}") String runtimeRoot) {
     this.problemMapper = problemMapper;
-    RUNTIME_ROOT = runtime_root;
-    PROBLEM_PATH = RUNTIME_ROOT + "/problem";
+    RUNTIME_ROOT = runtimeRoot;
+    PROBLEM_PATH = RUNTIME_ROOT + "/problems";
   }
 
   @Override

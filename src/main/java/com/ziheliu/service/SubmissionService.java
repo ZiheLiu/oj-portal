@@ -11,4 +11,6 @@ public interface SubmissionService {
   public SubmissionDto getSubmissionById(int problemId);
 
   public boolean hasUnfinishedSubmissions(String username, int problemId);
+
+  public void requestCompile(SubmissionDto submissionDto);
 }

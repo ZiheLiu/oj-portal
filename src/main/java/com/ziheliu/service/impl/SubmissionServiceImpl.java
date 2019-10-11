@@ -11,16 +11,20 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SubmissionServiceImpl implements SubmissionService {
   private final SubmissionMapper submissionMapper;
+  private final RocketMQTemplate rocketMQTemplate;
 
   @Autowired
-  public SubmissionServiceImpl(SubmissionMapper submissionMapper) {
+  public SubmissionServiceImpl(SubmissionMapper submissionMapper, RocketMQTemplate rocketMQTemplate) {
     this.submissionMapper = submissionMapper;
+    this.rocketMQTemplate = rocketMQTemplate;
   }
 
   @Override
@@ -55,6 +59,11 @@ public class SubmissionServiceImpl implements SubmissionService {
   @Override
   public boolean hasUnfinishedSubmissions(String username, int problemId) {
     return submissionMapper.hasUnfinishedSubmissions(username, problemId) > 0;
+  }
+
+  @Override
+  public void requestCompile(SubmissionDto submissionDto) {
+    rocketMQTemplate.convertAndSend("compile", submissionDto.decode());
   }
 
   private SubmissionDto submission2dto(Submission submission) {

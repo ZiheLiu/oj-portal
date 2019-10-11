@@ -54,7 +54,7 @@ public class SubmissionController {
       return new ResponseEntity<>(new MessageDto("现有的提交还没有完成"), HttpStatus.FORBIDDEN);
     }
 
-    // TODO: send compile task to rocket mq
+    submissionService.requestCompile(submissionDto);
 
     return ResponseEntity.ok(submissionDto);
   }
